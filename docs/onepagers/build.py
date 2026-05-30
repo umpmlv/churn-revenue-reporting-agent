@@ -283,6 +283,22 @@ def render(
     )
 
 
+def render_web(html: str, png: Path, width: int = 920) -> None:
+    """Render a tall, screen-optimised one-pager (single column, large fonts) to
+    a full-height PNG — readable at full README width, unlike the dense A4 page."""
+    built = png.with_suffix(".built.html")
+    built.write_text(html)
+    with sync_playwright() as p:
+        browser = p.chromium.launch(headless=True)
+        page = browser.new_page(
+            viewport={"width": width, "height": 1400}, device_scale_factor=2
+        )
+        page.goto(built.as_uri(), wait_until="networkidle", timeout=20000)
+        page.screenshot(path=str(png), full_page=True)
+        browser.close()
+    log.info("rendered web %s", png.name)
+
+
 def main() -> int:
     base = build()
     variants = {
@@ -301,6 +317,11 @@ def main() -> int:
                 hero=HERE / f"{name}.{lang}-hero.png",
                 hero_cut=hero_cut[name],
             )
+    # Tall, readable web renders for the README (EN).
+    web_tokens = {**base, "ARCH_SVG": arch_svg("en")}
+    for name in ("findings", "method"):
+        html = fill(HERE / f"{name}.web.html", web_tokens)
+        render_web(html, HERE / f"{name}.web.png")
     log.info("done — leakage=$%s, files in %s", base["LEAK"], HERE)
     return 0
 

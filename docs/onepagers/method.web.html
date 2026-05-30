@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agentic Analytics — Method (web)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FBFAF5; --ink:#15130E; --ink-2:#3A372E; --muted:#6E6A5C;
+    --rule:#2A2820; --rule-soft:#CDC7B6; --fill-soft:#E7E2D3;
+    --serif:'Spectral', Georgia, serif; --display:'Fraunces', Georgia, serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--paper); color: var(--ink); font-family: var(--serif);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 40px 48px 34px; font-size: 16.5px; line-height: 1.5; }
+
+  .folio { display: flex; align-items: center; gap: 12px; font-family: var(--display);
+    font-size: 13px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2);
+    padding-bottom: 10px; border-bottom: 1px solid var(--rule); }
+  .folio .right { margin-left: auto; color: var(--muted); }
+
+  .masthead { text-align: center; padding: 18px 0 14px; border-bottom: 3px double var(--rule); }
+  .name { font-family: var(--display); font-weight: 900; font-size: 46px; line-height: 1;
+    letter-spacing: -.015em; text-transform: uppercase; }
+  .dek { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 19px;
+    color: var(--ink-2); margin-top: 14px; }
+
+  h2 { font-family: var(--display); font-weight: 700; font-size: 17px; letter-spacing: .12em;
+    text-transform: uppercase; padding-bottom: 6px; margin: 28px 0 14px; border-bottom: 2px solid var(--rule); }
+
+  .lead { font-size: 18px; line-height: 1.55; text-align: justify; }
+  .lead::first-letter { font-family: var(--display); font-weight: 900; font-size: 60px; float: left;
+    line-height: .8; padding: 6px 12px 0 0; }
+  .lead b { font-weight: 600; }
+
+  .arch { text-align: center; margin: 22px auto 6px; max-width: 460px; }
+  .arch svg { width: 100%; height: auto; }
+  .arch__cap { font-family: var(--display); font-style: italic; font-size: 14px; color: var(--muted);
+    margin-top: 8px; }
+
+  p.body { font-size: 16.5px; color: var(--ink); line-height: 1.55; margin-bottom: 8px; text-align: justify; }
+  p.body b { font-weight: 600; }
+
+  ol.steps, ul.list { list-style: none; }
+  ol.steps li, ul.list li { position: relative; padding-left: 24px; margin-bottom: 7px;
+    font-size: 16.5px; line-height: 1.5; }
+  ul.list li::before { content:'■'; position:absolute; left:2px; top:4px; font-size:9px; }
+  ol.steps { counter-reset: s; }
+  ol.steps li { counter-increment: s; }
+  ol.steps li::before { content: counter(s) "."; position:absolute; left:0; top:0;
+    font-family: var(--display); font-weight: 700; font-size: 15px; }
+  li b { font-weight: 600; }
+
+  .quote { border-left: 3px solid var(--ink); padding: 4px 0 4px 16px; margin: 10px 0;
+    font-style: italic; font-size: 16.5px; color: var(--ink-2); line-height: 1.5; }
+  .quote b { font-style: normal; font-weight: 600; color: var(--ink); }
+
+  table.cvl { width: 100%; border-collapse: collapse; font-size: 16px; margin-top: 4px; }
+  table.cvl th { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: .07em;
+    text-transform: uppercase; text-align: left; border-bottom: 2px solid var(--rule); padding: 4px 10px 6px 0; }
+  table.cvl td { padding: 7px 10px 7px 0; vertical-align: top; border-bottom: 1px solid var(--rule-soft);
+    color: var(--ink-2); }
+  table.cvl td:first-child { color: var(--ink); font-weight: 600; }
+
+  .footer { margin-top: 26px; padding-top: 12px; border-top: 3px double var(--rule);
+    font-family: var(--display); font-size: 12px; letter-spacing: .1em; color: var(--muted);
+    text-transform: uppercase; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="folio">
+    <span>✦ Agentic Analytics</span>
+    <span class="right">Method · MMXXVI</span>
+  </div>
+
+  <div class="masthead">
+    <div class="name">Numbers by Code, Story by Agent</div>
+    <div class="dek">A reporting agent where deterministic code owns every figure and the model never does arithmetic — making it very hard for a wrong figure to reach the page.</div>
+  </div>
+
+  <h2>The principle</h2>
+  <p class="lead"><b>In fintech the cost of a wrong figure is high, so financial maths is not delegated to a model.</b>
+  Deterministic Python generates the data, computes every metric, and validates it — that is the single
+  source of truth. The LLM agent is an <b>orchestrator, narrator and self-critic</b>: it reads the
+  pre-computed numbers, decides which trends matter, writes the report, and verifies its own output. It is
+  never handed raw data to "do maths" on. Either way the figures are identical, because they come from the
+  same code — the agent only supplies prose.</p>
+
+  <div class="arch">
+    {{ARCH_SVG}}
+    <div class="arch__cap">Code computes and validates; the agent narrates; a deterministic gate re-checks every number before the report ships.</div>
+  </div>
+
+  <h2>The pipeline</h2>
+  <ol class="steps">
+    <li><b>Generate</b> — a closed 1,000-user cohort over 12 months (synthetic, reproducible).</li>
+    <li><b>Compute</b> — the six monthly metrics: active &amp; paid users, churned users, revenue, churn rate, ARPU.</li>
+    <li><b>Validate</b> — {{N_CHECKS}} data-quality checks gate the data before any conclusion.</li>
+    <li><b>Report</b> — the agent writes a six-section business report from the validated numbers.</li>
+  </ol>
+
+  <h2>Data quality — {{N_CHECKS}} checks</h2>
+  <p class="body">The data is distrusted until proven clean: schema, no nulls, unique (user, month), exactly 1,000 users, plan↔price, no reactivation, one lapse per user, revenue reconciliation, and more.</p>
+  <ul class="list">
+    <li><b>Independent recomputation</b> — every metric is recomputed from raw data and compared to the metrics table, so churn is verified two ways, not just totalled.</li>
+    <li>A failed check forces a warning header and demotes conclusions to provisional.</li>
+  </ul>
+
+  <h2>Reproducibility</h2>
+  <p class="body">Everything is driven by a single <b>seed ({{SEED}})</b> via NumPy. In a pinned environment the same seed yields a byte-identical dataset and metrics — anyone who re-runs it sees the same figures. Random, but repeatable.</p>
+
+  <h2>The agent loop</h2>
+  <p class="body">A tool-using loop on the Anthropic Messages API. The agent receives the metrics, validation summary and pre-computed highlights, plus hard rules: <b>use only these numbers, never recalculate.</b> It drafts, calls a check tool, and revises until clean.</p>
+
+  <h2>The guardrail</h2>
+  <p class="body"><b>check_report_numbers</b> is deterministic code, not the model. It extracts every numeric token from the draft and matches it against the allowed figures — and it also flags wrong-sign percentages.</p>
+  <p class="body">Crucially it runs on the <b>final</b> text <b>unconditionally</b> — even if the agent skipped its own check — so trust in the numbers does not depend on the model behaving.</p>
+  <div class="quote">In a real run the gate caught fabricated numbers on the first pass (<b>ok=false</b>), forced a repair round, and only then shipped — recorded in <b>agent_transcript.md</b> as evidence.</div>
+
+  <h2>Code vs LLM</h2>
+  <table class="cvl">
+    <tr><th>Deterministic code</th><th>LLM agent</th></tr>
+    <tr><td>All metric maths</td><td>Which trends matter</td></tr>
+    <tr><td>Validation &amp; reconciliation</td><td>Business narrative</td></tr>
+    <tr><td>Number verification</td><td>Self-critique loop</td></tr>
+    <tr><td>Reproducible figures</td><td>Clear prose only</td></tr>
+  </table>
+
+  <div class="footer">Agentic workflow — plan · call tools · self-verify · finish</div>
+
+</div>
+</body>
+</html>

@@ -9,11 +9,11 @@ core subscription metrics, validates them, and produces a short business report.
 
 **Business brief** ([`findings.en.pdf`](docs/onepagers/findings.en.pdf)):
 
-<a href="docs/onepagers/findings.en.pdf"><img src="docs/onepagers/findings.en-preview.png" width="100%" alt="Business one-pager — Retention, not price"></a>
+<a href="docs/onepagers/findings.en.pdf"><img src="docs/onepagers/findings.web.png" width="100%" alt="Business one-pager — Retention, not price"></a>
 
 **Technical brief** ([`method.en.pdf`](docs/onepagers/method.en.pdf)):
 
-<a href="docs/onepagers/method.en.pdf"><img src="docs/onepagers/method.en-preview.png" width="100%" alt="Technical one-pager — Numbers by code, story by agent"></a>
+<a href="docs/onepagers/method.en.pdf"><img src="docs/onepagers/method.web.png" width="100%" alt="Technical one-pager — Numbers by code, story by agent"></a>
 
 *Russian versions (`findings.ru.pdf`, `method.ru.pdf`) are in [`docs/onepagers/`](docs/onepagers/).*
 
