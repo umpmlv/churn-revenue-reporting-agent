@@ -91,7 +91,7 @@
 
   <div class="folio">
     <span>✦ Subscription Analytics</span>
-    <span class="right">Findings · MMXXVI</span>
+    <span class="right">Findings · 2026</span>
   </div>
 
   <div class="masthead">
@@ -111,13 +111,13 @@
   held near $18 the whole time (a {{ARPU_CHG_PCT}}% move). A formal decomposition attributes <b>{{VOL_SHARE}}%</b>
   of the revenue decline to lost users and only <b>{{ARPU_SHARE}}%</b> to price/mix. So the lever is
   <b>retention</b> — keeping the early-month users who are leaving fastest — not pricing or packaging.
-  One quick win sits alongside it: <b>${{LEAK}}</b> ({{LEAK_PCT}}% of billable) leaked to failed payments on
-  still-active accounts, which is potentially recoverable.</p>
+  Alongside it, up to <b>${{LEAK}}</b> ({{LEAK_PCT}}% of billable) leaked to failed payments on
+  still-active accounts — gross, and partly recoverable via dunning.</p>
 
   <div class="stats">
     <div class="stat"><div class="stat__num"><small>−</small>{{REV_DECLINE_PCT}}<small>%</small></div><div class="stat__lab">Revenue, M1 → M12</div></div>
     <div class="stat"><div class="stat__num">{{RETAIN_PCT}}<small>%</small></div><div class="stat__lab">Users retained at M12</div></div>
-    <div class="stat"><div class="stat__num">${{LEAK}}</div><div class="stat__lab">Addressable failed-payment leakage</div></div>
+    <div class="stat"><div class="stat__num">${{LEAK}}</div><div class="stat__lab">Failed-payment leakage (gross)</div></div>
   </div>
 
   <h2>What the data shows</h2>
@@ -149,7 +149,7 @@
       <span><b>Volume effect</b> — the base shrank from {{ACT_FIRST}} to {{ACT_LAST}}</span>
       <span><b>Price/mix effect</b> — ARPU moved {{ARPU_CHG_PCT}}%, premium share held ~19–20%</span>
     </div>
-    <div class="decomp__leak">Separately, <b>${{LEAK}}</b> ({{LEAK_PCT}}% of billable) was lost to failed payments on active accounts — involuntary, not a cancellation, and potentially recoverable via dunning.</div>
+    <div class="decomp__leak">Separately, <b>${{LEAK}}</b> ({{LEAK_PCT}}% of billable) was lost to failed payments on active accounts — involuntary, not a cancellation. This is gross leakage; how much returns depends on dunning success (see action 1).</div>
   </div>
 
   <h2>What to do Monday</h2>
@@ -157,14 +157,14 @@
     <div class="action__n">1</div>
     <div>
       <div class="action__t">Recover failed payments <span class="tag">Quick win</span></div>
-      <div class="action__d">~<b>${{LEAK}}</b> a year leaks from active users whose charge failed — not churn, just a broken charge. A dunning flow (retries, card-update prompts) recovers a share of it with minimal product work. <b>Owner:</b> payments / eng.</div>
+      <div class="action__d">Up to <b>${{LEAK}}</b> a year leaks from active users whose charge failed — not churn, just a broken charge. A dunning flow (retries, card-update prompts) wins back a share: at a 25 / 50 / 75% recovery rate that is <b>${{LEAK_25}} / ${{LEAK_50}} / ${{LEAK_75}}</b> a year, for minimal product work. <b>Owner:</b> payments / eng.</div>
     </div>
   </div>
   <div class="action">
     <div class="action__n">2</div>
     <div>
       <div class="action__t">Fix early-month retention <span class="tag">Main lever</span></div>
-      <div class="action__d">Churn is highest in months 2–4 ({{CHURN_FIRST}}% → falling) and eases to {{CHURN_LAST}}% by M12. The damage is at onboarding. Investigate the drop after month 4 — test whether it reflects onboarding, cohort mix, or how the data was simulated — then replicate what works earlier. <b>Owner:</b> product / growth.</div>
+      <div class="action__d">Churn is highest in months 2–4 ({{CHURN_FIRST}}% → falling) and eases to {{CHURN_LAST}}% by M12. The damage is at onboarding. Investigate why churn peaks in months 2–4 — test whether it reflects onboarding, cohort mix, or how the data was simulated — then carry what works later into those early weeks. <b>Owner:</b> product / growth.</div>
     </div>
   </div>
   <div class="action">

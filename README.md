@@ -138,7 +138,12 @@ carrying the metrics, highlights, and validation status. See `src/prompts.py`.
   `check_report_numbers` (which also flags wrong-sign percentages). The
   deterministic check **always runs on the final report** — even if the model never
   called the tool — and a failure forces a repair round or the template fallback,
-  so unverified numbers cannot reach the output.
+  so fabricated numbers are caught before the report ships.
+- **Known limit (by design):** this check matches numeric *tokens*, not their
+  meaning — a real figure used in the wrong role, or a missing required metric,
+  would still pass. A production control would verify *structured claims*
+  (`{metric, period, value, unit}`) rather than regex over markdown. See
+  *What I'd add with more time*.
 - Failed data-quality checks force a warning header and demote conclusions.
 - Deterministic template fallback guarantees a valid report with zero API access.
 
@@ -166,8 +171,9 @@ Chromium — `pip install playwright && playwright install chromium`).
 ## Reproducibility
 
 Everything is driven by a single `SEED` (default 42) via
-`numpy.random.default_rng`. The same seed yields a byte-identical CSV and metrics
-(verified). The LLM narrative may vary in wording but not in figures — those come
+`numpy.random.default_rng`. In a pinned environment the same seed reproduces the
+same CSV and metrics (a golden-file/hash test would make that a hard guarantee).
+The LLM narrative may vary in wording but not in figures — those come
 from the deterministic core. All knobs live in `src/config.py`.
 
 ## Project layout
@@ -188,4 +194,8 @@ src/
 Multiple churn scenarios (soft/hard) for comparison; payment-retry/dunning
 modelling; cohort-style retention curves; a quantitative revenue-loss
 decomposition (volume vs failed payments vs plan mix); optional DuckDB/SQL
-implementation of the metric layer to mirror a warehouse setup.
+implementation of the metric layer to mirror a warehouse setup. On the control
+side: a **structured-claim guardrail** (verify `{metric, period, value, unit}`
+per claim, not just numeric tokens) to catch a right number used in the wrong
+role, and a **golden-file/hash test** that makes the reproducibility claim a hard
+guarantee.

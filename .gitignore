@@ -15,3 +15,4 @@ docs/onepagers/*.built.html
 
 # internal review notes (not part of the submission)
 docs/onepagers/codex_review.md
+docs/onepagers/review_persona_*.md

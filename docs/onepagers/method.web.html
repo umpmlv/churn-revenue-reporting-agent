@@ -75,12 +75,12 @@
 
   <div class="folio">
     <span>✦ Agentic Analytics</span>
-    <span class="right">Method · MMXXVI</span>
+    <span class="right">Method · 2026</span>
   </div>
 
   <div class="masthead">
     <div class="name">Numbers by Code, Story by Agent</div>
-    <div class="dek">A reporting agent where deterministic code owns every figure and the model never does arithmetic — making it very hard for a wrong figure to reach the page.</div>
+    <div class="dek">A reporting agent where deterministic code owns every figure and the model never does arithmetic — so a fabricated number is caught before the report ships.</div>
   </div>
 
   <h2>The principle</h2>
@@ -112,7 +112,7 @@
   </ul>
 
   <h2>Reproducibility</h2>
-  <p class="body">Everything is driven by a single <b>seed ({{SEED}})</b> via NumPy. In a pinned environment the same seed yields a byte-identical dataset and metrics — anyone who re-runs it sees the same figures. Random, but repeatable.</p>
+  <p class="body">Everything is driven by a single <b>seed ({{SEED}})</b> via NumPy. In a pinned environment the same seed reproduces the same dataset and metrics — anyone who re-runs it sees the same figures. A golden-file/hash test would turn that into a hard guarantee. Random, but repeatable.</p>
 
   <h2>The agent loop</h2>
   <p class="body">A tool-using loop on the Anthropic Messages API. The agent receives the metrics, validation summary and pre-computed highlights, plus hard rules: <b>use only these numbers, never recalculate.</b> It drafts, calls a check tool, and revises until clean.</p>
@@ -120,6 +120,7 @@
   <h2>The guardrail</h2>
   <p class="body"><b>check_report_numbers</b> is deterministic code, not the model. It extracts every numeric token from the draft and matches it against the allowed figures — and it also flags wrong-sign percentages.</p>
   <p class="body">Crucially it runs on the <b>final</b> text <b>unconditionally</b> — even if the agent skipped its own check — so trust in the numbers does not depend on the model behaving.</p>
+  <p class="body"><b>What it does not catch — by design.</b> It is a check on numeric <i>tokens</i>, not meaning: a real figure used in the wrong role (right value, wrong label), or a missing required metric, would pass. That limit is explicit. A production control would verify <b>structured claims</b> — {metric, period, value, unit} extracted from the text — rather than regex over markdown.</p>
   <div class="quote">In a real run the gate caught fabricated numbers on the first pass (<b>ok=false</b>), forced a repair round, and only then shipped — recorded in <b>agent_transcript.md</b> as evidence.</div>
 
   <h2>Code vs LLM</h2>

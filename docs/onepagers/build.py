@@ -206,6 +206,7 @@ def build() -> dict[str, str]:
 
     leak = failed_leakage()
     leak_pct = leak / (sum(revenue) + leak) * 100
+    leak_25, leak_50, leak_75 = leak * 0.25, leak * 0.50, leak * 0.75
 
     n_checks = 17
     if VALIDATION.exists():
@@ -229,6 +230,9 @@ def build() -> dict[str, str]:
         "ARPU_W": f"{max(arpu_share, 0.4):.2f}",
         "LEAK": fmt(leak),
         "LEAK_PCT": f"{leak_pct:.1f}",
+        "LEAK_25": fmt(leak_25),
+        "LEAK_50": fmt(leak_50),
+        "LEAK_75": fmt(leak_75),
         "N_CHECKS": str(n_checks),
         "SEED": "42",
         "CHART_BASE": area_chart(active, 1000, fmt(act_first), fmt(act_last)),
