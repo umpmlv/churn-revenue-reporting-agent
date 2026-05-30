@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Аналитика подписки — Выводы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FBFAF5; --ink:#15130E; --ink-2:#3A372E; --muted:#6E6A5C;
+    --rule:#2A2820; --rule-soft:#CDC7B6; --fill:#15130E; --fill-soft:#E7E2D3;
+    --serif:'Spectral', Georgia, 'Times New Roman', serif;
+    --display:'Fraunces', Georgia, serif;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 210mm; }
+  body {
+    font-family: var(--serif); background: var(--paper); color: var(--ink);
+    font-size: 8.8pt; line-height: 1.42;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .page { padding: 9mm 13mm 6mm; }
+
+  .folio {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--display); font-size: 7.6pt;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2);
+    padding-bottom: 6px; border-bottom: 1px solid var(--rule);
+  }
+  .folio .star { font-size: 8pt; }
+  .folio .right { margin-left: auto; letter-spacing: .18em; color: var(--muted); }
+
+  .masthead { text-align: center; padding: 9px 0 7px; border-bottom: 3px double var(--rule); }
+  .name {
+    font-family: var(--display); font-weight: 900;
+    font-size: 33pt; line-height: .94; letter-spacing: -.015em;
+    text-transform: uppercase; color: var(--ink);
+  }
+  .dek {
+    font-family: var(--display); font-style: italic; font-weight: 500;
+    font-size: 11pt; color: var(--ink-2); margin-top: 9px; max-width: 168mm; margin-left:auto; margin-right:auto;
+  }
+  .standfirst {
+    margin-top: 9px; padding-top: 7px; border-top: 1px solid var(--rule-soft);
+    font-family: var(--display); font-size: 7.8pt; letter-spacing: .07em;
+    text-transform: uppercase; color: var(--muted);
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 16px;
+  }
+  .standfirst b { color: var(--ink); font-weight: 600; }
+
+  .lead { display: flex; gap: 20px; padding: 11px 0; border-bottom: 1px solid var(--rule); }
+  .lead-body { flex: 1.7; }
+  .lead-kicker {
+    font-family: var(--display); font-size: 7.6pt; font-weight: 600;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--ink); margin-bottom: 5px;
+  }
+  .summary { font-size: 9.4pt; line-height: 1.44; color: var(--ink); text-align: justify; }
+  .summary::first-letter {
+    font-family: var(--display); font-weight: 900; font-size: 31pt;
+    float: left; line-height: .82; padding: 3px 7px 0 0; color: var(--ink);
+  }
+  .summary b { font-weight: 600; }
+
+  .statbox { flex: 1; display: flex; flex-direction: column; gap: 7px; padding-left: 18px; border-left: 1px solid var(--rule-soft); }
+  .stat__num { font-family: var(--display); font-weight: 900; font-size: 21pt; line-height: 1; color: var(--ink); }
+  .stat__num small { font-size: 11pt; font-weight: 700; }
+  .stat__lab { font-family: var(--display); font-size: 7pt; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+  h2 {
+    font-family: var(--display); font-weight: 700; font-size: 9pt;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--ink);
+    padding-bottom: 4px; margin: 11px 0 8px; border-bottom: 2px solid var(--rule);
+  }
+
+  .charts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .chart__t { font-family: var(--display); font-weight: 700; font-size: 8.4pt; color: var(--ink); margin-bottom: 1px; }
+  .chart__s { font-family: var(--display); font-style: italic; font-size: 7.4pt; color: var(--muted); margin-bottom: 5px; }
+  .chart svg { width: 100%; height: auto; display: block; }
+
+  .decomp { margin-top: 11px; padding: 9px 11px; border: 1px solid var(--rule); background: #fff; }
+  .decomp__t { font-family: var(--display); font-weight: 700; font-size: 8.4pt; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 6px; }
+  .decomp__bar { display: flex; height: 19px; border: 1px solid var(--ink); }
+  .decomp__seg { display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 7pt; font-weight: 600; letter-spacing: .03em; white-space: nowrap; overflow: hidden; }
+  .seg-vol { background: var(--ink); color: var(--paper); }
+  .seg-arpu { background: var(--fill-soft); color: var(--ink); }
+  .decomp__leg { display: flex; gap: 18px; margin-top: 6px; font-size: 7.8pt; color: var(--ink-2); }
+  .decomp__leg b { color: var(--ink); font-weight: 600; }
+  .decomp__leak { margin-top: 6px; font-size: 8pt; color: var(--ink-2); font-style: italic; }
+  .decomp__leak b { color: var(--ink); font-weight: 600; font-style: normal; }
+
+  .cols2 { display: grid; grid-template-columns: 1.55fr 1fr; gap: 0; }
+  .col-l { padding-right: 18px; border-right: 1px solid var(--rule-soft); }
+  .col-r { padding-left: 18px; }
+
+  .action { display: flex; gap: 9px; margin-bottom: 8px; }
+  .action__n { font-family: var(--display); font-weight: 900; font-size: 15pt; line-height: .9; color: var(--ink); flex-shrink: 0; width: 20px; }
+  .action__t { font-family: var(--display); font-weight: 700; font-size: 8.6pt; color: var(--ink); margin-bottom: 1px; }
+  .action__d { font-size: 8.2pt; color: var(--ink-2); line-height: 1.36; text-align: justify; }
+  .action__d b { color: var(--ink); font-weight: 600; }
+  .tag { font-family: var(--display); font-size: 6.6pt; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; border: 1px solid var(--rule); padding: 0 4px; border-radius: 2px; color: var(--ink-2); white-space: nowrap; }
+
+  .fh { margin-bottom: 8px; }
+  .fh__k { font-family: var(--display); font-weight: 700; font-size: 7.4pt; letter-spacing: .08em; text-transform: uppercase; color: var(--ink); }
+  .fh__v { font-size: 8pt; color: var(--ink-2); line-height: 1.36; text-align: justify; margin-top: 1px; }
+  .fh__v b { color: var(--ink); font-weight: 600; }
+
+  .footer {
+    margin-top: 11px; padding-top: 7px; border-top: 3px double var(--rule);
+    font-family: var(--display); font-size: 7pt; letter-spacing: .1em;
+    color: var(--muted); text-transform: uppercase;
+    display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="folio">
+    <span class="star">✦</span>
+    <span>Gauss Money · Аналитика подписки</span>
+    <span class="right">Выводы · MMXXVI</span>
+  </div>
+
+  <div class="masthead">
+    <div class="name">Удержание, не цена</div>
+    <div class="dek">Двенадцать месяцев на когорте из 1 000 клиентов: выручка упала на {{REV_DECLINE_PCT}}% почти полностью из-за ухода подписчиков — сумма, которую платит каждый, почти не изменилась.</div>
+    <div class="standfirst">
+      <span><b>{{ACT_FIRST}} → {{ACT_LAST}}</b> клиентов</span>
+      <span><b>${{REV_FIRST}} → ${{REV_LAST}}</b> выручка/мес</span>
+      <span>ARPU <b>стабилен</b></span>
+      <span>12 месяцев · 1 когорта</span>
+    </div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-body">
+      <div class="lead-kicker">Главный вывод</div>
+      <p class="summary"><b>Выручка падает из-за сжатия базы, а не из-за монетизации.</b>
+      Активная база сократилась вдвое за год ({{ACT_FIRST}} → {{ACT_LAST}}, удержано {{RETAIN_PCT}}%), при этом ARPU
+      держался около $18 весь период (изменение {{ARPU_CHG_PCT}}%). Формальное разложение относит <b>{{VOL_SHARE}}%</b>
+      падения выручки на потерю клиентов и лишь <b>{{ARPU_SHARE}}%</b> — на цену и микс. Значит рычаг — <b>удержание</b>,
+      прежде всего клиентов первых месяцев, которые уходят быстрее всего, а не ценообразование или тарифная упаковка.
+      Рядом — быстрая победа: <b>${{LEAK}}</b> ({{LEAK_PCT}}% от выставленного к оплате) утекло на сорванных платежах
+      активных клиентов, и часть этой суммы возвращаема.</p>
+    </div>
+    <div class="statbox">
+      <div class="stat"><div class="stat__num"><small>−</small>{{REV_DECLINE_PCT}}<small>%</small></div><div class="stat__lab">Выручка, М1 → М12</div></div>
+      <div class="stat"><div class="stat__num">{{RETAIN_PCT}}<small>%</small></div><div class="stat__lab">Клиентов удержано к М12</div></div>
+      <div class="stat"><div class="stat__num">${{LEAK}}</div><div class="stat__lab">Потенциально возвратная утечка</div></div>
+    </div>
+  </div>
+
+  <h2>Что показывают данные</h2>
+  <div class="charts">
+    <div class="chart">
+      <div class="chart__t">База сократилась вдвое</div>
+      <div class="chart__s">Активные клиенты, мес. 1–12</div>
+      {{CHART_BASE}}
+    </div>
+    <div class="chart">
+      <div class="chart__t">Отток смещён в начало</div>
+      <div class="chart__s">Месячный отток, мес. 2–12</div>
+      {{CHART_CHURN}}
+    </div>
+    <div class="chart">
+      <div class="chart__t">Выручка следует за объёмом</div>
+      <div class="chart__s">Месячная выручка, мес. 1–12</div>
+      {{CHART_REV}}
+    </div>
+  </div>
+
+  <div class="decomp">
+    <div class="decomp__t">Почему упала выручка — разложение падения на ${{REV_DECLINE}}</div>
+    <div class="decomp__bar">
+      <div class="decomp__seg seg-vol" style="width:{{VOL_SHARE}}%">Меньше клиентов — {{VOL_SHARE}}% падения</div>
+      <div class="decomp__seg seg-arpu" style="width:{{ARPU_W}}%" title="Цена/микс {{ARPU_SHARE}}%"></div>
+    </div>
+    <div class="decomp__leg">
+      <span><b>Эффект объёма</b> — база сжалась с {{ACT_FIRST}} до {{ACT_LAST}}</span>
+      <span><b>Эффект цены/микса</b> — ARPU сдвинулся на {{ARPU_CHG_PCT}}%, доля premium ~19–20%</span>
+    </div>
+    <div class="decomp__leak">Отдельно <b>${{LEAK}}</b> ({{LEAK_PCT}}% от выставленного) потеряно на сорванных платежах активных клиентов — это вынужденный сбой, не отмена, и частично возвращается через dunning (повторные списания).</div>
+  </div>
+
+  <h2>Что делать в понедельник</h2>
+  <div class="cols2">
+    <div class="col-l">
+      <div class="action">
+        <div class="action__n">1</div>
+        <div>
+          <div class="action__t">Вернуть сорванные платежи &nbsp;<span class="tag">Быстрая победа</span></div>
+          <div class="action__d">~<b>${{LEAK}}</b> в год утекает у активных клиентов, чей платёж не прошёл — это не отток, а сбой списания. Dunning-процесс (повторные списания, запрос на обновление карты) возвращает часть с минимальной доработкой продукта. <b>Владелец:</b> платежи / разработка.</div>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action__n">2</div>
+        <div>
+          <div class="action__t">Починить удержание первых месяцев &nbsp;<span class="tag">Главный рычаг</span></div>
+          <div class="action__d">Отток максимален в месяцы 2–4 ({{CHURN_FIRST}}% → снижается) и опускается до {{CHURN_LAST}}% к М12. Урон — на onboarding. Разобраться в спаде после 4-го месяца — проверить, что за ним стоит (onboarding, состав когорты или дизайн модели), — и воспроизвести рабочее раньше. <b>Владелец:</b> продукт / growth.</div>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action__n">3</div>
+        <div>
+          <div class="action__t">Наполнять верх воронки</div>
+          <div class="action__d">Это закрытая когорта без новых клиентов, поэтому база может только убывать. Даже при улучшенном оттоке {{CHURN_LAST}}% выручка продолжит снижаться без привлечения. Анализ когорты не измеряет эффективность привлечения, но показывает, почему оно необходимо, чтобы компенсировать естественное убывание. <b>Владелец:</b> growth / маркетинг.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-r">
+      <div class="fh">
+        <div class="fh__k">Факт</div>
+        <div class="fh__v">Ранний отток доминирует, а ARPU стабилен — оба читаются прямо из данных. Падение выручки — история <b>объёма</b>.</div>
+      </div>
+      <div class="fh">
+        <div class="fh__k">Гипотеза на проверку</div>
+        <div class="fh__v">Часть раннего оттока может быть <b>нецелевыми лидами</b>. В данных нет канала привлечения, поэтому нужна информация по каналам и поведению до покупки — здесь это не утверждается.</div>
+      </div>
+      <div class="fh">
+        <div class="fh__k">О данных</div>
+        <div class="fh__v">Цифры — из воспроизводимой синтетической когорты (seed 42); метод реальный, конкретные числа иллюстративны. На боевых данных работает тот же пайплайн; выводы выводятся заново.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Собрано из output/metrics.csv — числа не вписаны вручную</span>
+  </div>
+
+</div>
+</body>
+</html>

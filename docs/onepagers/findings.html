@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Subscription Analytics — Findings</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FBFAF5; --ink:#15130E; --ink-2:#3A372E; --muted:#6E6A5C;
+    --rule:#2A2820; --rule-soft:#CDC7B6; --fill:#15130E; --fill-soft:#E7E2D3;
+    --serif:'Spectral', Georgia, 'Times New Roman', serif;
+    --display:'Fraunces', Georgia, serif;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 210mm; }
+  body {
+    font-family: var(--serif); background: var(--paper); color: var(--ink);
+    font-size: 8.8pt; line-height: 1.42;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .page { padding: 9mm 13mm 6mm; }
+
+  .folio {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--display); font-size: 7.6pt;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2);
+    padding-bottom: 6px; border-bottom: 1px solid var(--rule);
+  }
+  .folio .star { font-size: 8pt; }
+  .folio .right { margin-left: auto; letter-spacing: .18em; color: var(--muted); }
+
+  .masthead { text-align: center; padding: 9px 0 7px; border-bottom: 3px double var(--rule); }
+  .name {
+    font-family: var(--display); font-weight: 900;
+    font-size: 33pt; line-height: .94; letter-spacing: -.015em;
+    text-transform: uppercase; color: var(--ink);
+  }
+  .dek {
+    font-family: var(--display); font-style: italic; font-weight: 500;
+    font-size: 11pt; color: var(--ink-2); margin-top: 9px; max-width: 165mm; margin-left:auto; margin-right:auto;
+  }
+  .standfirst {
+    margin-top: 9px; padding-top: 7px; border-top: 1px solid var(--rule-soft);
+    font-family: var(--display); font-size: 7.8pt; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted);
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 4px 16px;
+  }
+  .standfirst b { color: var(--ink); font-weight: 600; }
+
+  .lead { display: flex; gap: 20px; padding: 11px 0; border-bottom: 1px solid var(--rule); }
+  .lead-body { flex: 1.7; }
+  .lead-kicker {
+    font-family: var(--display); font-size: 7.6pt; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--ink); margin-bottom: 5px;
+  }
+  .summary { font-size: 9.4pt; line-height: 1.44; color: var(--ink); text-align: justify; }
+  .summary::first-letter {
+    font-family: var(--display); font-weight: 900; font-size: 31pt;
+    float: left; line-height: .82; padding: 3px 7px 0 0; color: var(--ink);
+  }
+  .summary b { font-weight: 600; }
+
+  .statbox { flex: 1; display: flex; flex-direction: column; gap: 7px; padding-left: 18px; border-left: 1px solid var(--rule-soft); }
+  .stat { }
+  .stat__num { font-family: var(--display); font-weight: 900; font-size: 21pt; line-height: 1; color: var(--ink); }
+  .stat__num small { font-size: 11pt; font-weight: 700; }
+  .stat__lab { font-family: var(--display); font-size: 7pt; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-top: 2px; }
+
+  h2 {
+    font-family: var(--display); font-weight: 700; font-size: 9pt;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ink);
+    padding-bottom: 4px; margin: 11px 0 8px; border-bottom: 2px solid var(--rule);
+  }
+
+  .charts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .chart { }
+  .chart__t { font-family: var(--display); font-weight: 700; font-size: 8.4pt; color: var(--ink); margin-bottom: 1px; }
+  .chart__s { font-family: var(--display); font-style: italic; font-size: 7.4pt; color: var(--muted); margin-bottom: 5px; }
+  .chart svg { width: 100%; height: auto; display: block; }
+
+  .decomp { margin-top: 11px; padding: 9px 11px; border: 1px solid var(--rule); background: #fff; }
+  .decomp__t { font-family: var(--display); font-weight: 700; font-size: 8.4pt; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .decomp__bar { display: flex; height: 19px; border: 1px solid var(--ink); }
+  .decomp__seg { display: flex; align-items: center; justify-content: center; font-family: var(--display); font-size: 7pt; font-weight: 600; letter-spacing: .04em; white-space: nowrap; overflow: hidden; }
+  .seg-vol { background: var(--ink); color: var(--paper); }
+  .seg-arpu { background: var(--fill-soft); color: var(--ink); }
+  .decomp__leg { display: flex; gap: 18px; margin-top: 6px; font-size: 7.8pt; color: var(--ink-2); }
+  .decomp__leg b { color: var(--ink); font-weight: 600; }
+  .decomp__leak { margin-top: 6px; font-size: 8pt; color: var(--ink-2); font-style: italic; }
+  .decomp__leak b { color: var(--ink); font-weight: 600; font-style: normal; }
+
+  .cols2 { display: grid; grid-template-columns: 1.55fr 1fr; gap: 0; }
+  .col-l { padding-right: 18px; border-right: 1px solid var(--rule-soft); }
+  .col-r { padding-left: 18px; }
+
+  .action { display: flex; gap: 9px; margin-bottom: 8px; }
+  .action__n { font-family: var(--display); font-weight: 900; font-size: 15pt; line-height: .9; color: var(--ink); flex-shrink: 0; width: 20px; }
+  .action__b { }
+  .action__t { font-family: var(--display); font-weight: 700; font-size: 8.6pt; color: var(--ink); margin-bottom: 1px; }
+  .action__d { font-size: 8.2pt; color: var(--ink-2); line-height: 1.36; text-align: justify; }
+  .action__d b { color: var(--ink); font-weight: 600; }
+  .tag { font-family: var(--display); font-size: 6.6pt; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; border: 1px solid var(--rule); padding: 0 4px; border-radius: 2px; color: var(--ink-2); white-space: nowrap; }
+
+  .fh { margin-bottom: 8px; }
+  .fh__k { font-family: var(--display); font-weight: 700; font-size: 7.4pt; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); }
+  .fh__v { font-size: 8pt; color: var(--ink-2); line-height: 1.36; text-align: justify; margin-top: 1px; }
+  .fh__v b { color: var(--ink); font-weight: 600; }
+
+  .footer {
+    margin-top: 11px; padding-top: 7px; border-top: 3px double var(--rule);
+    font-family: var(--display); font-size: 7pt; letter-spacing: .12em;
+    color: var(--muted); text-transform: uppercase;
+    display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="folio">
+    <span class="star">✦</span>
+    <span>Gauss Money · Subscription Analytics</span>
+    <span class="right">Findings · MMXXVI</span>
+  </div>
+
+  <div class="masthead">
+    <div class="name">Retention, Not Price</div>
+    <div class="dek">Twelve months on a 1,000-user cohort: revenue fell {{REV_DECLINE_PCT}}% almost entirely because subscribers left — the price each one pays barely moved.</div>
+    <div class="standfirst">
+      <span><b>{{ACT_FIRST}} → {{ACT_LAST}}</b> users</span>
+      <span><b>${{REV_FIRST}} → ${{REV_LAST}}</b> monthly revenue</span>
+      <span>ARPU <b>flat</b></span>
+      <span>12 months · 1 cohort</span>
+    </div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-body">
+      <div class="lead-kicker">The Bottom Line</div>
+      <p class="summary"><b>Revenue is down because the base shrank, not because monetisation weakened.</b>
+      The active base halved over the year ({{ACT_FIRST}} → {{ACT_LAST}}, {{RETAIN_PCT}}% retained), while ARPU held near
+      $18 the whole time (a {{ARPU_CHG_PCT}}% move). A formal decomposition attributes <b>{{VOL_SHARE}}%</b> of the revenue
+      decline to lost users and only <b>{{ARPU_SHARE}}%</b> to price/mix. So the lever is <b>retention</b> — keeping the
+      early-month users who are leaving fastest — not pricing or packaging. One quick win sits alongside it:
+      <b>${{LEAK}}</b> ({{LEAK_PCT}}% of billable) leaked to failed payments on still-active accounts, which is potentially recoverable.</p>
+    </div>
+    <div class="statbox">
+      <div class="stat"><div class="stat__num"><small>−</small>{{REV_DECLINE_PCT}}<small>%</small></div><div class="stat__lab">Revenue, M1 → M12</div></div>
+      <div class="stat"><div class="stat__num">{{RETAIN_PCT}}<small>%</small></div><div class="stat__lab">Users retained at M12</div></div>
+      <div class="stat"><div class="stat__num">${{LEAK}}</div><div class="stat__lab">Addressable failed-payment leakage</div></div>
+    </div>
+  </div>
+
+  <h2>What the data shows</h2>
+  <div class="charts">
+    <div class="chart">
+      <div class="chart__t">The base halved</div>
+      <div class="chart__s">Active users, month 1–12</div>
+      {{CHART_BASE}}
+    </div>
+    <div class="chart">
+      <div class="chart__t">Churn is front-loaded</div>
+      <div class="chart__s">Monthly churn rate, month 2–12</div>
+      {{CHART_CHURN}}
+    </div>
+    <div class="chart">
+      <div class="chart__t">Revenue follows volume</div>
+      <div class="chart__s">Monthly revenue, month 1–12</div>
+      {{CHART_REV}}
+    </div>
+  </div>
+
+  <div class="decomp">
+    <div class="decomp__t">Why revenue fell — decomposition of the ${{REV_DECLINE}} decline</div>
+    <div class="decomp__bar">
+      <div class="decomp__seg seg-vol" style="width:{{VOL_SHARE}}%">Fewer users — {{VOL_SHARE}}% of the decline</div>
+      <div class="decomp__seg seg-arpu" style="width:{{ARPU_W}}%" title="Price/mix {{ARPU_SHARE}}%"></div>
+    </div>
+    <div class="decomp__leg">
+      <span><b>Volume effect</b> — the base shrank from {{ACT_FIRST}} to {{ACT_LAST}}</span>
+      <span><b>Price/mix effect</b> — ARPU moved {{ARPU_CHG_PCT}}%, premium share held ~19–20%</span>
+    </div>
+    <div class="decomp__leak">Separately, <b>${{LEAK}}</b> ({{LEAK_PCT}}% of billable) was lost to failed payments on active accounts — involuntary, not a cancellation, and potentially recoverable via dunning.</div>
+  </div>
+
+  <h2>What to do Monday</h2>
+  <div class="cols2">
+    <div class="col-l">
+      <div class="action">
+        <div class="action__n">1</div>
+        <div class="action__b">
+          <div class="action__t">Recover failed payments &nbsp;<span class="tag">Quick win</span></div>
+          <div class="action__d">~<b>${{LEAK}}</b> a year leaks from active users whose charge failed — not churn, just a broken charge. A dunning flow (retries, card-update prompts) recovers a share of it with minimal product work. <b>Owner:</b> payments / eng.</div>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action__n">2</div>
+        <div class="action__b">
+          <div class="action__t">Fix early-month retention &nbsp;<span class="tag">Main lever</span></div>
+          <div class="action__d">Churn is highest in months 2–4 ({{CHURN_FIRST}}% → falling) and eases to {{CHURN_LAST}}% by M12. The damage is at onboarding. Investigate the drop after month 4 — test whether it reflects onboarding, cohort mix, or how the data was simulated — then replicate what works earlier. <b>Owner:</b> product / growth.</div>
+        </div>
+      </div>
+      <div class="action">
+        <div class="action__n">3</div>
+        <div class="action__b">
+          <div class="action__t">Refill the top of the funnel</div>
+          <div class="action__d">It is a closed cohort with no new users, so the base can only fall. Even at the improved {{CHURN_LAST}}% churn, revenue keeps sliding without acquisition. This cohort view cannot measure acquisition efficiency, but it shows why acquisition is needed to offset natural decay. <b>Owner:</b> growth / marketing.</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-r">
+      <div class="fh">
+        <div class="fh__k">Fact</div>
+        <div class="fh__v">Early-month churn dominates and ARPU is flat — both read directly from the data. Revenue decline is a <b>volume</b> story.</div>
+      </div>
+      <div class="fh">
+        <div class="fh__k">Hypothesis to test</div>
+        <div class="fh__v">Some early churn may be <b>off-target leads</b>. The current dataset has no acquisition channel, so this needs channel + pre-purchase data to confirm — not asserted here.</div>
+      </div>
+      <div class="fh">
+        <div class="fh__k">Note on the data</div>
+        <div class="fh__v">Figures come from a reproducible synthetic cohort (seed 42); the method is real, the specific numbers are illustrative. On live data the same pipeline runs; conclusions are re-derived.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Generated from output/metrics.csv — figures not hand-typed</span>
+  </div>
+
+</div>
+</body>
+</html>

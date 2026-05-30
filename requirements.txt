@@ -1,0 +1,7 @@
+numpy>=1.26
+pandas>=2.1
+# Optional: only needed for the agentic LLM report path. The pipeline runs
+# fully (template report) without it.
+anthropic>=0.39
+# Dev: tests
+pytest>=8.0

@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Agentic Analytics — Method</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FBFAF5; --ink:#15130E; --ink-2:#3A372E; --muted:#6E6A5C;
+    --rule:#2A2820; --rule-soft:#CDC7B6; --fill-soft:#E7E2D3;
+    --serif:'Spectral', Georgia, 'Times New Roman', serif;
+    --display:'Fraunces', Georgia, serif;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 210mm; }
+  body {
+    font-family: var(--serif); background: var(--paper); color: var(--ink);
+    font-size: 8.8pt; line-height: 1.42;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .page { padding: 9mm 13mm 6mm; }
+
+  .folio {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--display); font-size: 7.6pt;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2);
+    padding-bottom: 6px; border-bottom: 1px solid var(--rule);
+  }
+  .folio .star { font-size: 8pt; }
+  .folio .right { margin-left: auto; letter-spacing: .18em; color: var(--muted); }
+
+  .masthead { text-align: center; padding: 9px 0 7px; border-bottom: 3px double var(--rule); }
+  .name {
+    font-family: var(--display); font-weight: 900;
+    font-size: 30pt; line-height: .96; letter-spacing: -.015em;
+    text-transform: uppercase; color: var(--ink);
+  }
+  .dek {
+    font-family: var(--display); font-style: italic; font-weight: 500;
+    font-size: 11pt; color: var(--ink-2); margin-top: 9px; max-width: 168mm; margin-left:auto; margin-right:auto;
+  }
+
+  .lead { display: flex; gap: 20px; padding: 11px 0; border-bottom: 1px solid var(--rule); }
+  .lead-body { flex: 1.35; }
+  .lead-kicker {
+    font-family: var(--display); font-size: 7.6pt; font-weight: 600;
+    letter-spacing: .18em; text-transform: uppercase; color: var(--ink); margin-bottom: 5px;
+  }
+  .summary { font-size: 9.4pt; line-height: 1.44; color: var(--ink); text-align: justify; }
+  .summary::first-letter {
+    font-family: var(--display); font-weight: 900; font-size: 31pt;
+    float: left; line-height: .82; padding: 3px 7px 0 0; color: var(--ink);
+  }
+  .summary b { font-weight: 600; }
+  .arch { flex: 1; padding-left: 18px; border-left: 1px solid var(--rule-soft); }
+  .arch svg { width: 100%; height: auto; display: block; }
+  .arch__cap { font-family: var(--display); font-style: italic; font-size: 7pt; color: var(--muted); margin-top: 4px; line-height: 1.3; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 10px; }
+  .col-l { padding-right: 18px; border-right: 1px solid var(--rule-soft); }
+  .col-r { padding-left: 18px; }
+
+  h2 {
+    font-family: var(--display); font-weight: 700; font-size: 9pt;
+    letter-spacing: .14em; text-transform: uppercase; color: var(--ink);
+    padding-bottom: 4px; margin: 0 0 7px; border-bottom: 2px solid var(--rule);
+  }
+  section { margin-bottom: 11px; }
+  p.body { font-size: 8.6pt; color: var(--ink); line-height: 1.4; text-align: justify; margin-bottom: 4px; }
+  p.body b { font-weight: 600; }
+
+  ol.steps, ul.list { list-style: none; }
+  ol.steps li, ul.list li {
+    position: relative; padding-left: 15px; margin-bottom: 3px;
+    font-size: 8.4pt; line-height: 1.36; color: var(--ink); text-align: justify;
+  }
+  ul.list li::before { content:'■'; position:absolute; left:0; top:1.4px; font-size:5pt; color:var(--ink); }
+  ol.steps { counter-reset: s; }
+  ol.steps li { counter-increment: s; }
+  ol.steps li::before { content: counter(s); position:absolute; left:0; top:0;
+    font-family: var(--display); font-weight: 700; font-size: 7.6pt; color: var(--ink); }
+  li b { font-weight: 600; }
+
+  .quote { border-left: 2px solid var(--ink); padding: 2px 0 2px 9px; margin: 5px 0 7px;
+    font-style: italic; font-size: 8.4pt; color: var(--ink-2); line-height: 1.38; }
+  .quote b { font-style: normal; font-weight: 600; color: var(--ink); }
+
+  table.cvl { width: 100%; border-collapse: collapse; font-size: 8pt; margin-top: 2px; }
+  table.cvl th { font-family: var(--display); font-weight: 700; font-size: 7.2pt; letter-spacing: .08em;
+    text-transform: uppercase; text-align: left; color: var(--ink); border-bottom: 1.5px solid var(--rule); padding: 2px 6px 3px 0; }
+  table.cvl td { padding: 3px 6px 3px 0; vertical-align: top; border-bottom: 1px solid var(--rule-soft); color: var(--ink-2); line-height: 1.3; }
+  table.cvl td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
+
+  .footer {
+    margin-top: 11px; padding-top: 7px; border-top: 3px double var(--rule);
+    font-family: var(--display); font-size: 7pt; letter-spacing: .12em;
+    color: var(--muted); text-transform: uppercase;
+    display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="folio">
+    <span class="star">✦</span>
+    <span>Gauss Money · Agentic Analytics</span>
+    <span class="right">Method · MMXXVI</span>
+  </div>
+
+  <div class="masthead">
+    <div class="name">Numbers by Code, Story by Agent</div>
+    <div class="dek">A reporting agent where deterministic code owns every figure and the model never does arithmetic — making it very hard for a wrong figure to reach the page.</div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-body">
+      <div class="lead-kicker">The Principle</div>
+      <p class="summary"><b>In fintech the cost of a wrong figure is high, so financial maths is not delegated to a model.</b>
+      Deterministic Python generates the data, computes every metric, and validates it — that is the single source of
+      truth. The LLM agent is an <b>orchestrator, narrator and self-critic</b>: it reads the pre-computed numbers, decides
+      which trends matter, writes the report, and verifies its own output. It is never handed raw data to "do maths" on.
+      Either way the figures are identical, because they come from the same code — the agent only supplies prose.</p>
+    </div>
+    <div class="arch">
+      {{ARCH_SVG}}
+      <div class="arch__cap">Code computes and validates; the agent narrates; a deterministic gate re-checks every number before the report ships.</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col-l">
+      <section>
+        <h2>The pipeline</h2>
+        <ol class="steps">
+          <li><b>Generate</b> — a closed 1,000-user cohort over 12 months (synthetic, reproducible).</li>
+          <li><b>Compute</b> — the six monthly metrics: active &amp; paid users, churned users, revenue, churn rate, ARPU.</li>
+          <li><b>Validate</b> — {{N_CHECKS}} data-quality checks gate the data before any conclusion.</li>
+          <li><b>Report</b> — the agent writes a six-section business report from the validated numbers.</li>
+        </ol>
+      </section>
+      <section>
+        <h2>Data quality — {{N_CHECKS}} checks</h2>
+        <p class="body">The data is distrusted until proven clean: schema, no nulls, unique (user, month), exactly 1,000 users, plan↔price, no reactivation, one lapse per user, revenue reconciliation, and more.</p>
+        <ul class="list">
+          <li><b>Independent recomputation</b> — every metric is recomputed from raw data and compared to the metrics table, so churn is verified two ways, not just totalled.</li>
+          <li>A failed check forces a warning header and demotes conclusions to provisional.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Reproducibility</h2>
+        <p class="body">Everything is driven by a single <b>seed ({{SEED}})</b> via NumPy. In a pinned environment the same seed yields a byte-identical dataset and metrics — anyone who re-runs it sees the same figures. Random, but repeatable.</p>
+      </section>
+    </div>
+
+    <div class="col-r">
+      <section>
+        <h2>The agent loop</h2>
+        <p class="body">A tool-using loop on the Anthropic Messages API. The agent receives the metrics, validation summary and pre-computed highlights, plus hard rules: <b>use only these numbers, never recalculate.</b> It drafts, calls a check tool, and revises until clean.</p>
+      </section>
+      <section>
+        <h2>The guardrail</h2>
+        <p class="body"><b>check_report_numbers</b> is deterministic code, not the model. It extracts every numeric token from the draft and matches it against the allowed figures — and it also flags wrong-sign percentages.</p>
+        <p class="body">Crucially it runs on the <b>final</b> text <b>unconditionally</b> — even if the agent skipped its own check — so trust in the numbers does not depend on the model behaving.</p>
+        <div class="quote">In a real run the gate caught fabricated numbers on the first pass (<b>ok=false</b>), forced a repair round, and only then shipped — recorded in <b>agent_transcript.md</b> as evidence.</div>
+      </section>
+      <section>
+        <h2>Code vs LLM</h2>
+        <table class="cvl">
+          <tr><th>Deterministic code</th><th>LLM agent</th></tr>
+          <tr><td>All metric maths</td><td>Which trends matter</td></tr>
+          <tr><td>Validation &amp; reconciliation</td><td>Business narrative</td></tr>
+          <tr><td>Number verification</td><td>Self-critique loop</td></tr>
+          <tr><td>Reproducible figures</td><td>Clear prose only</td></tr>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Agentic workflow — plan · call tools · self-verify · finish</span>
+  </div>
+
+</div>
+</body>
+</html>

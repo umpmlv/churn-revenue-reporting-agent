@@ -1,0 +1,92 @@
+{
+  "overall_passed": true,
+  "n_checks": 17,
+  "n_failed": 0,
+  "checks": [
+    {
+      "check": "schema_columns",
+      "passed": true,
+      "detail": "expected ['user_id', 'month', 'plan', 'monthly_price', 'payment_status', 'amount_paid', 'is_active'], got ['user_id', 'month', 'plan', 'monthly_price', 'payment_status', 'amount_paid', 'is_active']"
+    },
+    {
+      "check": "no_nulls",
+      "passed": true,
+      "detail": "columns with nulls: []"
+    },
+    {
+      "check": "unique_user_month",
+      "passed": true,
+      "detail": "0 duplicate pairs"
+    },
+    {
+      "check": "user_count",
+      "passed": true,
+      "detail": "1000 unique users (expected 1000)"
+    },
+    {
+      "check": "month_range",
+      "passed": true,
+      "detail": "0 out of range"
+    },
+    {
+      "check": "plan_price_mapping",
+      "passed": true,
+      "detail": "0 mismatched"
+    },
+    {
+      "check": "payment_amount_consistency",
+      "passed": true,
+      "detail": "0 bad paid, 0 bad failed"
+    },
+    {
+      "check": "lapse_row_consistency",
+      "passed": true,
+      "detail": "0 bad"
+    },
+    {
+      "check": "active_users_non_increasing",
+      "passed": true,
+      "detail": "series=[1000, 904, 818, 744, 701, 652, 609, 574, 543, 515, 492, 476]"
+    },
+    {
+      "check": "paid_le_active",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "churn_rate_range",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "revenue_reconciliation",
+      "passed": true,
+      "detail": "csv=144880.0 vs metrics=144880.0"
+    },
+    {
+      "check": "arpu_recomputation",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "check": "payment_status_domain",
+      "passed": true,
+      "detail": "0 bad"
+    },
+    {
+      "check": "no_reactivation",
+      "passed": true,
+      "detail": "0 reactivated users"
+    },
+    {
+      "check": "single_lapse_per_user",
+      "passed": true,
+      "detail": "0 multi-lapse"
+    },
+    {
+      "check": "monthly_metric_recomputation",
+      "passed": true,
+      "detail": "mismatched columns: []"
+    }
+  ]
+}

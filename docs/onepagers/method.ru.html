@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Агентная аналитика — Метод</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#FBFAF5; --ink:#15130E; --ink-2:#3A372E; --muted:#6E6A5C;
+    --rule:#2A2820; --rule-soft:#CDC7B6; --fill-soft:#E7E2D3;
+    --serif:'Spectral', Georgia, 'Times New Roman', serif;
+    --display:'Fraunces', Georgia, serif;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 210mm; }
+  body {
+    font-family: var(--serif); background: var(--paper); color: var(--ink);
+    font-size: 8.8pt; line-height: 1.42;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  .page { padding: 9mm 13mm 6mm; }
+
+  .folio {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--display); font-size: 7.6pt;
+    letter-spacing: .22em; text-transform: uppercase; color: var(--ink-2);
+    padding-bottom: 6px; border-bottom: 1px solid var(--rule);
+  }
+  .folio .star { font-size: 8pt; }
+  .folio .right { margin-left: auto; letter-spacing: .18em; color: var(--muted); }
+
+  .masthead { text-align: center; padding: 9px 0 7px; border-bottom: 3px double var(--rule); }
+  .name {
+    font-family: var(--display); font-weight: 900;
+    font-size: 28pt; line-height: .98; letter-spacing: -.015em;
+    text-transform: uppercase; color: var(--ink);
+  }
+  .dek {
+    font-family: var(--display); font-style: italic; font-weight: 500;
+    font-size: 11pt; color: var(--ink-2); margin-top: 9px; max-width: 170mm; margin-left:auto; margin-right:auto;
+  }
+
+  .lead { display: flex; gap: 20px; padding: 11px 0; border-bottom: 1px solid var(--rule); }
+  .lead-body { flex: 1.35; }
+  .lead-kicker {
+    font-family: var(--display); font-size: 7.6pt; font-weight: 600;
+    letter-spacing: .16em; text-transform: uppercase; color: var(--ink); margin-bottom: 5px;
+  }
+  .summary { font-size: 9.4pt; line-height: 1.44; color: var(--ink); text-align: justify; }
+  .summary::first-letter {
+    font-family: var(--display); font-weight: 900; font-size: 31pt;
+    float: left; line-height: .82; padding: 3px 7px 0 0; color: var(--ink);
+  }
+  .summary b { font-weight: 600; }
+  .arch { flex: 1; padding-left: 18px; border-left: 1px solid var(--rule-soft); }
+  .arch svg { width: 100%; height: auto; display: block; }
+  .arch__cap { font-family: var(--display); font-style: italic; font-size: 7pt; color: var(--muted); margin-top: 4px; line-height: 1.3; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 10px; }
+  .col-l { padding-right: 18px; border-right: 1px solid var(--rule-soft); }
+  .col-r { padding-left: 18px; }
+
+  h2 {
+    font-family: var(--display); font-weight: 700; font-size: 9pt;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--ink);
+    padding-bottom: 4px; margin: 0 0 7px; border-bottom: 2px solid var(--rule);
+  }
+  section { margin-bottom: 11px; }
+  p.body { font-size: 8.6pt; color: var(--ink); line-height: 1.4; text-align: justify; margin-bottom: 4px; }
+  p.body b { font-weight: 600; }
+
+  ol.steps, ul.list { list-style: none; }
+  ol.steps li, ul.list li {
+    position: relative; padding-left: 15px; margin-bottom: 3px;
+    font-size: 8.4pt; line-height: 1.36; color: var(--ink); text-align: justify;
+  }
+  ul.list li::before { content:'■'; position:absolute; left:0; top:1.4px; font-size:5pt; color:var(--ink); }
+  ol.steps { counter-reset: s; }
+  ol.steps li { counter-increment: s; }
+  ol.steps li::before { content: counter(s); position:absolute; left:0; top:0;
+    font-family: var(--display); font-weight: 700; font-size: 7.6pt; color: var(--ink); }
+  li b { font-weight: 600; }
+
+  .quote { border-left: 2px solid var(--ink); padding: 2px 0 2px 9px; margin: 5px 0 7px;
+    font-style: italic; font-size: 8.4pt; color: var(--ink-2); line-height: 1.38; }
+  .quote b { font-style: normal; font-weight: 600; color: var(--ink); }
+
+  table.cvl { width: 100%; border-collapse: collapse; font-size: 8pt; margin-top: 2px; }
+  table.cvl th { font-family: var(--display); font-weight: 700; font-size: 7.2pt; letter-spacing: .06em;
+    text-transform: uppercase; text-align: left; color: var(--ink); border-bottom: 1.5px solid var(--rule); padding: 2px 6px 3px 0; }
+  table.cvl td { padding: 3px 6px 3px 0; vertical-align: top; border-bottom: 1px solid var(--rule-soft); color: var(--ink-2); line-height: 1.3; }
+  table.cvl td:first-child { color: var(--ink); font-weight: 600; }
+
+  .footer {
+    margin-top: 11px; padding-top: 7px; border-top: 3px double var(--rule);
+    font-family: var(--display); font-size: 7pt; letter-spacing: .1em;
+    color: var(--muted); text-transform: uppercase;
+    display: flex; justify-content: space-between;
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="folio">
+    <span class="star">✦</span>
+    <span>Gauss Money · Агентная аналитика</span>
+    <span class="right">Метод · MMXXVI</span>
+  </div>
+
+  <div class="masthead">
+    <div class="name">Цифры — кодом, рассказ — агентом</div>
+    <div class="dek">Репортинг-агент, где детерминированный код владеет каждой цифрой, а модель не считает арифметику — поэтому неверному числу очень трудно попасть в отчёт.</div>
+  </div>
+
+  <div class="lead">
+    <div class="lead-body">
+      <div class="lead-kicker">Принцип</div>
+      <p class="summary"><b>В финтехе цена ошибки в цифре высока, поэтому финансовая арифметика не отдаётся модели.</b>
+      Детерминированный Python генерирует данные, считает каждую метрику и валидирует её — это единственный источник
+      правды. LLM-агент — это <b>оркестратор, рассказчик и самокритик</b>: читает посчитанные числа, решает, какие
+      тренды важны, пишет отчёт и проверяет собственный вывод. Агенту не передаются сырые данные для самостоятельных
+      расчётов. В любом случае цифры идентичны, потому что приходят из одного кода — агент даёт только текст.</p>
+    </div>
+    <div class="arch">
+      {{ARCH_SVG}}
+      <div class="arch__cap">Код считает и валидирует; агент рассказывает; детерминированный контроль перепроверяет каждое число перед выдачей.</div>
+    </div>
+  </div>
+
+  <div class="cols">
+    <div class="col-l">
+      <section>
+        <h2>Пайплайн</h2>
+        <ol class="steps">
+          <li><b>Генерация</b> — закрытая когорта из 1 000 клиентов за 12 месяцев (синтетика, воспроизводимо).</li>
+          <li><b>Расчёт</b> — шесть месячных метрик: активные и платящие, ушедшие, выручка, доля оттока, ARPU.</li>
+          <li><b>Валидация</b> — {{N_CHECKS}} проверок качества гейтят данные до любых выводов.</li>
+          <li><b>Отчёт</b> — агент пишет бизнес-отчёт из шести разделов на проверенных числах.</li>
+        </ol>
+      </section>
+      <section>
+        <h2>Качество данных — {{N_CHECKS}} проверок</h2>
+        <p class="body">Данным не доверяют, пока не доказана чистота: схема, нет пропусков, уникальность (клиент, месяц), ровно 1 000 клиентов, тариф↔цена, нет реактивации, один уход на клиента, сверка выручки и другие.</p>
+        <ul class="list">
+          <li><b>Независимый пересчёт</b> — каждая метрика пересчитывается из сырых данных и сверяется с таблицей, поэтому отток проверен двумя путями, а не просто просуммирован.</li>
+          <li>Провал проверки включает предупреждение в шапке и понижает выводы до предварительных.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Воспроизводимость</h2>
+        <p class="body">Всё управляется единым <b>seed ({{SEED}})</b> через NumPy. В зафиксированном окружении тот же seed даёт байт-идентичные данные и метрики — автор, агент и ревьюер видят одни и те же цифры. Случайно, но повторяемо.</p>
+      </section>
+    </div>
+
+    <div class="col-r">
+      <section>
+        <h2>Цикл агента</h2>
+        <p class="body">Tool-using цикл на Anthropic Messages API. Агент получает метрики, сводку валидации и посчитанные highlights плюс жёсткие правила: <b>использовать только эти числа, ничего не пересчитывать.</b> Он пишет черновик, вызывает инструмент-проверку и правит до чистоты.</p>
+      </section>
+      <section>
+        <h2>Страховка (guardrail)</h2>
+        <p class="body"><b>check_report_numbers</b> — это детерминированный код, не модель. Он вытаскивает каждое число из черновика и сверяет с разрешёнными цифрами, а также ловит неверный знак процентов.</p>
+        <p class="body">Важно: он запускается на <b>финальном</b> тексте <b>безусловно</b> — даже если агент пропустил свою проверку — поэтому доверие к числам не зависит от добросовестности модели.</p>
+        <div class="quote">В реальном прогоне рамка поймала выдуманные числа на первом круге (<b>ok=false</b>), заставила переписать и только потом выдала отчёт — записано в <b>agent_transcript.md</b> как доказательство.</div>
+      </section>
+      <section>
+        <h2>Код vs LLM</h2>
+        <table class="cvl">
+          <tr><th>Детерминированный код</th><th>LLM-агент</th></tr>
+          <tr><td>Вся арифметика метрик</td><td>Какие тренды важны</td></tr>
+          <tr><td>Валидация и сверка</td><td>Бизнес-нарратив</td></tr>
+          <tr><td>Проверка чисел</td><td>Цикл самокритики</td></tr>
+          <tr><td>Воспроизводимые цифры</td><td>Только понятный текст</td></tr>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>Агентный workflow — план · вызов инструментов · самопроверка · финиш</span>
+  </div>
+
+</div>
+</body>
+</html>
