@@ -4,6 +4,19 @@ A small AI/reporting agent for a consumer fintech subscription business. It
 generates synthetic data for a 1,000-user cohort over 12 months, computes the
 core subscription metrics, validates them, and produces a short business report.
 
+> **The same result, two audiences** — a business brief and a technical brief,
+> both generated from `output/metrics.csv` so the figures can't drift from the report.
+
+**Business brief** — [`findings.en.pdf`](docs/onepagers/findings.en.pdf)
+
+![Business one-pager](docs/onepagers/findings.en-preview.png)
+
+**Technical brief** — [`method.en.pdf`](docs/onepagers/method.en.pdf)
+
+![Technical one-pager](docs/onepagers/method.en-preview.png)
+
+*Russian versions (`findings.ru.pdf`, `method.ru.pdf`) are in [`docs/onepagers/`](docs/onepagers/).*
+
 **Design principle:** the *numbers* are computed by deterministic code (the single
 source of truth); the *LLM agent* orchestrates the workflow, narrates the report,
 and self-checks — it never does arithmetic. In a fintech context the cost of a
