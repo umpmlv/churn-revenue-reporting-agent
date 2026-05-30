@@ -7,13 +7,13 @@ core subscription metrics, validates them, and produces a short business report.
 > **The same result, two audiences** — a business brief and a technical brief,
 > both generated from `output/metrics.csv` so the figures can't drift from the report.
 
-**Business brief** — [`findings.en.pdf`](docs/onepagers/findings.en.pdf)
+**Business brief** ([`findings.en.pdf`](docs/onepagers/findings.en.pdf)):
 
-![Business one-pager](docs/onepagers/findings.en-preview.png)
+<a href="docs/onepagers/findings.en.pdf"><img src="docs/onepagers/findings.en-preview.png" width="100%" alt="Business one-pager — Retention, not price"></a>
 
-**Technical brief** — [`method.en.pdf`](docs/onepagers/method.en.pdf)
+**Technical brief** ([`method.en.pdf`](docs/onepagers/method.en.pdf)):
 
-![Technical one-pager](docs/onepagers/method.en-preview.png)
+<a href="docs/onepagers/method.en.pdf"><img src="docs/onepagers/method.en-preview.png" width="100%" alt="Technical one-pager — Numbers by code, story by agent"></a>
 
 *Russian versions (`findings.ru.pdf`, `method.ru.pdf`) are in [`docs/onepagers/`](docs/onepagers/).*
 
