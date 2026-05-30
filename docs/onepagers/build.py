@@ -249,7 +249,13 @@ def fill(template: Path, tokens: dict[str, str]) -> str:
     return html
 
 
-def render(html: str, pdf: Path, png: Path) -> None:
+def render(
+    html: str,
+    pdf: Path,
+    png: Path,
+    hero: Path | None = None,
+    hero_cut: str | None = None,
+) -> None:
     built = pdf.with_suffix(".built.html")
     built.write_text(html)
     with sync_playwright() as p:
@@ -261,8 +267,20 @@ def render(html: str, pdf: Path, png: Path) -> None:
             path=str(pdf), format="A4", print_background=True, prefer_css_page_size=True
         )
         page.screenshot(path=str(png), full_page=True)
+        # Hero banner: crop the top of the page (masthead + key figures + charts)
+        # down to the start of `hero_cut`, for a punchy README preview.
+        if hero is not None and hero_cut is not None:
+            cut = page.locator(hero_cut).first.bounding_box()
+            width = page.evaluate("() => document.body.scrollWidth")
+            if cut:
+                page.screenshot(
+                    path=str(hero),
+                    clip={"x": 0, "y": 0, "width": width, "height": cut["y"]},
+                )
         browser.close()
-    log.info("rendered %s + %s", pdf.name, png.name)
+    log.info(
+        "rendered %s + %s%s", pdf.name, png.name, f" + {hero.name}" if hero else ""
+    )
 
 
 def main() -> int:
@@ -271,12 +289,17 @@ def main() -> int:
         "en": {"findings": "findings.html", "method": "method.html"},
         "ru": {"findings": "findings.ru.html", "method": "method.ru.html"},
     }
+    hero_cut = {"findings": ".decomp", "method": ".cols"}
     for lang, files in variants.items():
         tokens = {**base, "ARCH_SVG": arch_svg(lang)}
         for name, tmpl in files.items():
             html = fill(HERE / tmpl, tokens)
             render(
-                html, HERE / f"{name}.{lang}.pdf", HERE / f"{name}.{lang}-preview.png"
+                html,
+                HERE / f"{name}.{lang}.pdf",
+                HERE / f"{name}.{lang}-preview.png",
+                hero=HERE / f"{name}.{lang}-hero.png",
+                hero_cut=hero_cut[name],
             )
     log.info("done — leakage=$%s, files in %s", base["LEAK"], HERE)
     return 0
