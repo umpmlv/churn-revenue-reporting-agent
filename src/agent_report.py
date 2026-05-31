@@ -27,14 +27,21 @@ logger = logging.getLogger(__name__)
 # --------------------------------------------------------------------------- #
 def _decomposition(df: pd.DataFrame, first, last) -> dict:
     """Attribute the revenue change to its drivers: volume vs ARPU, and quantify
-    the revenue leaked to failed payments. All figures are real, from the data."""
-    total_change = float(last["monthly_revenue"] - first["monthly_revenue"])
-    # Volume effect: change in active users priced at the starting ARPU.
-    volume_effect = float(
-        (last["active_users"] - first["active_users"]) * first["arpu"]
+    the revenue leaked to failed payments. All figures are real, from the data.
+
+    The volume/ARPU split uses `metrics.revenue_decomposition` — the same function
+    the one-pagers call — so the report and the slides cannot show different shares.
+    """
+    from src.metrics import revenue_decomposition
+
+    dec = revenue_decomposition(
+        float(first["active_users"]),
+        float(last["active_users"]),
+        float(first["arpu"]),
+        float(last["arpu"]),
+        float(first["monthly_revenue"]),
+        float(last["monthly_revenue"]),
     )
-    # ARPU effect: change in per-user revenue on the ending base.
-    arpu_effect = float(last["active_users"] * (last["arpu"] - first["arpu"]))
 
     active = df[df["is_active"]]
     potential = float(active["monthly_price"].sum())  # if every active user paid
@@ -46,13 +53,9 @@ def _decomposition(df: pd.DataFrame, first, last) -> dict:
         return round((a["plan"] == "premium").mean() * 100, 1) if len(a) else 0.0
 
     return {
-        "rev_decline": round(abs(total_change), 2),
-        "vol_share_pct": round(volume_effect / total_change * 100, 1)
-        if total_change
-        else 0.0,
-        "arpu_share_pct": round(arpu_effect / total_change * 100, 1)
-        if total_change
-        else 0.0,
+        "rev_decline": round(abs(dec["total_change"]), 2),
+        "vol_share_pct": round(dec["vol_share_pct"], 1),
+        "arpu_share_pct": round(dec["arpu_share_pct"], 1),
         "failed_leakage": round(leakage, 2),
         "failed_leakage_pct": round(leakage / potential * 100, 1) if potential else 0.0,
         "premium_share_first": premium_share(int(first["month"])),
@@ -489,15 +492,29 @@ def build_report(
     metrics: pd.DataFrame, validation: dict, df: pd.DataFrame | None = None
 ) -> str:
     h = compute_highlights(metrics, df)
+    # The data-quality check count is a code-owned figure; allow it through the gate.
+    h = {**h, "n_checks": validation.get("n_checks", len(validation.get("checks", [])))}
+
     if os.getenv("ANTHROPIC_API_KEY"):
         try:
             logger.info("Generating report via agentic LLM path")
-            return _agentic_report(metrics, validation, h)
+            report = _agentic_report(metrics, validation, h)
         except Exception as exc:  # noqa: BLE001 - fall back to deterministic report
             logger.warning("LLM path failed (%s); falling back to template", exc)
+            report = template_report(metrics, validation, h)
     else:
         logger.info("No ANTHROPIC_API_KEY; using deterministic template report")
-    return template_report(metrics, validation, h)
+        report = template_report(metrics, validation, h)
+
+    # Final, unconditional number gate — runs on BOTH the agentic and the template
+    # path, so "the deterministic checker has seen the shipped report" holds no
+    # matter which path produced it (the agentic path also gates internally).
+    verdict = check_report_numbers(report, metrics, h)
+    if not verdict["ok"]:
+        logger.warning(
+            "Final report failed the number gate: %s", verdict["unmatched_numbers"]
+        )
+    return report
 
 
 def build_report_to_md(

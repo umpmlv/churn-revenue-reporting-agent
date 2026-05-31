@@ -43,7 +43,10 @@ def compute(df: pd.DataFrame) -> pd.DataFrame:
     for month in range(1, config.N_MONTHS + 1):
         sub = df[df["month"] == month]
         active_users = len(active_sets[month])
-        paid_users = int((sub["payment_status"] == "paid").sum())
+        # Paid users are, by definition, a subset of active users. Intersect with
+        # is_active explicitly so the metric stays correct even if a future input
+        # ever carried a paid row on an inactive account.
+        paid_users = int(((sub["payment_status"] == "paid") & sub["is_active"]).sum())
         # Churn = users active in m-1 who are no longer active in m. Zero for the
         # first month by definition (no prior period).
         churned_users = (
@@ -78,6 +81,42 @@ def compute(df: pd.DataFrame) -> pd.DataFrame:
 
     logger.info("Computed metrics for %d months", len(metrics))
     return metrics[METRIC_COLUMNS]
+
+
+def revenue_decomposition(
+    act_first: float,
+    act_last: float,
+    arpu_first: float,
+    arpu_last: float,
+    rev_first: float,
+    rev_last: float,
+) -> dict:
+    """Split the revenue change (month 1 -> month N) into a volume effect and an
+    ARPU (price/mix) effect. Single source for this formula — both the report
+    (`agent_report`) and the one-pagers (`build.py`) call this, so the published
+    shares cannot diverge.
+
+    Because revenue = active * ARPU, the two effects sum *exactly* to the total
+    change, so the shares sum to 100%. Shares are normalised by the signed total
+    change (not by absolute magnitudes), which preserves direction: if ARPU rose
+    while revenue fell, the ARPU share is negative and the volume share exceeds
+    100% — the economically correct reading, not a hidden offset.
+    """
+    total_change = rev_last - rev_first
+    volume_effect = (act_last - act_first) * arpu_first
+    arpu_effect = act_last * (arpu_last - arpu_first)
+    if total_change:
+        vol_share_pct = volume_effect / total_change * 100
+        arpu_share_pct = arpu_effect / total_change * 100
+    else:
+        vol_share_pct = arpu_share_pct = 0.0
+    return {
+        "total_change": total_change,
+        "volume_effect": volume_effect,
+        "arpu_effect": arpu_effect,
+        "vol_share_pct": vol_share_pct,
+        "arpu_share_pct": arpu_share_pct,
+    }
 
 
 def compute_to_csv(df: pd.DataFrame) -> pd.DataFrame:

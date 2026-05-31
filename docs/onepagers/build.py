@@ -216,12 +216,20 @@ def build() -> dict[str, str]:
     rev_decline_pct = decline / rev_first * 100
     retain_pct = act_last / act_first * 100
 
-    # revenue-decline decomposition: volume vs price/mix
-    vol_eff = (act_last - act_first) * arpu[0]
-    arpu_eff = act_last * (arpu[-1] - arpu[0])
-    denom = abs(vol_eff) + abs(arpu_eff)
-    vol_share = abs(vol_eff) / denom * 100
-    arpu_share = 100 - vol_share
+    # revenue-decline decomposition: volume vs price/mix — computed by the SAME
+    # src.metrics.revenue_decomposition the report uses, so the slides and the
+    # report cannot show different shares.
+    import sys
+
+    if str(REPO) not in sys.path:
+        sys.path.insert(0, str(REPO))
+    from src.metrics import revenue_decomposition
+
+    dec = revenue_decomposition(
+        act_first, act_last, arpu[0], arpu[-1], rev_first, rev_last
+    )
+    vol_share = dec["vol_share_pct"]
+    arpu_share = dec["arpu_share_pct"]
     arpu_chg_pct = (arpu[-1] - arpu[0]) / arpu[0] * 100
 
     leak = failed_leakage()
