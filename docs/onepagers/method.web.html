@@ -80,7 +80,7 @@
 
   <div class="masthead">
     <div class="name">Numbers by Code, Story by Agent</div>
-    <div class="dek">A reporting agent where deterministic code owns every figure and the model never does arithmetic — so a fabricated number is caught before the report ships.</div>
+    <div class="dek">A reporting agent where deterministic code owns every figure and the model never does arithmetic — and a numeric-token gate catches out-of-set figures before the report ships.</div>
   </div>
 
   <h2>The principle</h2>
@@ -107,7 +107,7 @@
   <h2>Data quality — {{N_CHECKS}} checks</h2>
   <p class="body">The data is distrusted until proven clean: schema, no nulls, unique (user, month), exactly 1,000 users, plan↔price, no reactivation, one lapse per user, revenue reconciliation, and more.</p>
   <ul class="list">
-    <li><b>Independent recomputation</b> — every metric is recomputed from raw data and compared to the metrics table, so churn is verified two ways, not just totalled.</li>
+    <li><b>Full re-derivation</b> — every metric is recomputed from the raw rows via the same metric code and compared to the table, catching a stale or hand-edited CSV (it shares the metric implementation, not a second independent formula).</li>
     <li>A failed check forces a warning header and demotes conclusions to provisional.</li>
   </ul>
 

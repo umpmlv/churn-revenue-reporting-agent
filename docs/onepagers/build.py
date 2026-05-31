@@ -45,6 +45,26 @@ def failed_leakage() -> float:
     return total
 
 
+def premium_active_share() -> tuple[float, float]:
+    """Premium-plan share (%) among ACTIVE subscription-months, in month 1 and
+    month 12 — computed from raw rows, not hand-typed."""
+    active: dict[int, int] = {}
+    premium: dict[int, int] = {}
+    with SUBS.open() as f:
+        for r in csv.DictReader(f):
+            if r["is_active"] in ("True", "true", "1"):
+                m = int(r["month"])
+                active[m] = active.get(m, 0) + 1
+                if r["plan"] == "premium":
+                    premium[m] = premium.get(m, 0) + 1
+    months = sorted(active)
+
+    def share(m: int) -> float:
+        return premium.get(m, 0) / active[m] * 100 if active.get(m) else 0.0
+
+    return share(months[0]), share(months[-1])
+
+
 # ── tiny SVG chart helpers (ink-on-cream, no chart library) ──────────────
 VB_W, VB_H = 200, 118
 PAD_L, PAD_R, PAD_T, PAD_B = 26, 8, 10, 22
@@ -207,6 +227,8 @@ def build() -> dict[str, str]:
     leak = failed_leakage()
     leak_pct = leak / (sum(revenue) + leak) * 100
     leak_25, leak_50, leak_75 = leak * 0.25, leak * 0.50, leak * 0.75
+    prem_first, prem_last = premium_active_share()
+    prem_lo, prem_hi = sorted((round(prem_first), round(prem_last)))
 
     n_checks = 17
     if VALIDATION.exists():
@@ -233,6 +255,7 @@ def build() -> dict[str, str]:
         "LEAK_25": fmt(leak_25),
         "LEAK_50": fmt(leak_50),
         "LEAK_75": fmt(leak_75),
+        "PREMIUM_SHARE": f"{prem_lo}–{prem_hi}" if prem_lo != prem_hi else f"{prem_lo}",
         "N_CHECKS": str(n_checks),
         "SEED": "42",
         "CHART_BASE": area_chart(active, 1000, fmt(act_first), fmt(act_last)),

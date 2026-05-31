@@ -44,6 +44,14 @@ def test_enforce_check_count_leaves_real_data_numbers_untouched():
     assert _enforce_check_count(text, {"n_checks": 17}) == text
 
 
+def test_enforce_check_count_normalises_ratio_form():
+    # "16/16 data-quality checks" must become "17/17", not "16/17".
+    bad = "All 16/16 data-quality checks passed."
+    fixed = _enforce_check_count(bad, {"n_checks": 17})
+    assert "17/17 data-quality checks" in fixed
+    assert "16" not in fixed
+
+
 def test_template_report_passes_its_own_check(ctx):
     metrics, h = ctx
     report = template_report(metrics, _CLEAN_VALIDATION, h)

@@ -152,8 +152,11 @@ def validate(df: pd.DataFrame, metrics: pd.DataFrame) -> dict:
     checks.append(_check("single_lapse_per_user", multi == 0, f"{multi} multi-lapse"))
 
     # 17. Full recomputation: every monthly metric recomputed from raw must equal
-    #     the provided metrics table. This proves the whole table is correct, not
-    #     just the totals — guards against a stale or hand-edited metrics.csv.
+    #     the provided metrics table. Guards against a stale or hand-edited
+    #     metrics.csv. Note: this re-runs the same metrics.compute() that produced
+    #     the table, so it shares the implementation — a re-derivation, not a
+    #     second independent formula. An independent revenue cross-check lives in
+    #     tests/test_revenue_reconciliation_independent.py.
     from src import metrics as metrics_mod
 
     recomputed = metrics_mod.compute(df).reset_index(drop=True)

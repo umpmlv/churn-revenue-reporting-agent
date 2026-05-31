@@ -175,6 +175,9 @@ def _allowed_numbers(metrics: pd.DataFrame, h: dict) -> tuple[set[float], set[fl
     ):
         if key in h:
             unsigned.add(abs(float(h[key])))
+    # Code-owned data-quality check count (normalised into the report by code).
+    if "n_checks" in h:
+        unsigned.add(float(h["n_checks"]))
     return unsigned, set(changes)
 
 
@@ -324,10 +327,22 @@ def _enforce_check_count(text: str, validation: dict) -> str:
     value (16) as the check count, and the gate passed it because 16 is a legit
     number. Here code overwrites any stated check count with the true value from
     `validation`, closing that "right number, wrong role" class deterministically.
+
+    Both phrasings are normalised: "N data-quality checks" and "N/N data-quality
+    checks" (the latter would otherwise only get its second number fixed).
     """
     n = validation.get("n_checks", len(validation.get("checks", [])))
+    # "16/16 data-quality checks" -> "17/17 data-quality checks"
+    text = re.sub(
+        r"\d+\s*/\s*\d+(\s+data[- ]quality\s+checks)",
+        lambda m: f"{n}/{n}{m.group(1)}",
+        text,
+        flags=re.IGNORECASE,
+    )
+    # bare "16 data-quality checks" -> "17 data-quality checks" (skip the "/N" form
+    # already handled above via the no-slash lookbehind)
     return re.sub(
-        r"\d+(\s+data[- ]quality\s+checks)",
+        r"(?<![\d/])\d+(\s+data[- ]quality\s+checks)",
         lambda m: f"{n}{m.group(1)}",
         text,
         flags=re.IGNORECASE,
@@ -351,6 +366,9 @@ def _agentic_report(metrics: pd.DataFrame, validation: dict, h: dict) -> str:
     user_prompt = prompts.build_user_prompt(
         _metrics_table_md(metrics), validation_md, _highlights_md(h)
     )
+    # The data-quality check count is a code-owned figure (see _enforce_check_count).
+    # Add it to the allowed set so the normalised final text still passes the gate.
+    h = {**h, "n_checks": validation.get("n_checks", len(validation.get("checks", [])))}
     tools = [
         {
             "name": "check_report_numbers",
@@ -411,6 +429,16 @@ def _agentic_report(metrics: pd.DataFrame, validation: dict, h: dict) -> str:
         if heading > 0:
             text = text[heading:]
 
+        # Assemble the FINAL text first — code-owned check count normalised and
+        # the data-quality warning header (if any) prepended — so the gate runs on
+        # exactly what gets written. Nothing is appended to the text after the gate.
+        text = _enforce_check_count(text, validation)
+        if not validation["overall_passed"]:
+            text = (
+                "> ⚠️ **Data quality checks FAILED — figures are not reliable.**\n\n"
+                + text
+            )
+
         # Always gate the FINAL text through the deterministic checker, even if
         # the model never called the tool itself. This is the real guardrail.
         verdict = check_report_numbers(text, metrics, h)
@@ -430,18 +458,13 @@ def _agentic_report(metrics: pd.DataFrame, validation: dict, h: dict) -> str:
             )
             continue  # spend another round to repair
 
-        text = _enforce_check_count(text, validation)
         transcript.append(
             f"## Turn {turn}: final report accepted\n"
-            "- deterministic final-gate check: `ok=true` (every number traced to metrics.csv)\n"
-            "- code-owned counts normalised: data-quality check count set from validation, "
-            "not the model"
+            "- code-owned counts normalised first (data-quality check count set from "
+            "validation, not the model)\n"
+            "- deterministic final-gate check on the assembled text: `ok=true` "
+            "(every number traced to metrics.csv)"
         )
-        if not validation["overall_passed"]:
-            text = (
-                "> ⚠️ **Data quality checks FAILED — figures are not reliable.**\n\n"
-                + text
-            )
         _write_transcript(transcript)
         return text
 

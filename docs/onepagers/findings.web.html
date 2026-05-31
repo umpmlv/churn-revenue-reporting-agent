@@ -108,7 +108,7 @@
   <h2>The bottom line</h2>
   <p class="lead"><b>Revenue is down because the base shrank, not because monetisation weakened.</b>
   The active base halved over the year ({{ACT_FIRST}} → {{ACT_LAST}}, {{RETAIN_PCT}}% retained), while ARPU
-  held near $18 the whole time (a {{ARPU_CHG_PCT}}% move). A formal decomposition attributes <b>{{VOL_SHARE}}%</b>
+  held near $18 the whole time (a {{ARPU_CHG_PCT}}% move). An M1-to-M12 decomposition attributes <b>{{VOL_SHARE}}%</b>
   of the revenue decline to lost users and only <b>{{ARPU_SHARE}}%</b> to price/mix. So the lever is
   <b>retention</b> — keeping the early-month users who are leaving fastest — not pricing or packaging.
   Alongside it, up to <b>${{LEAK}}</b> ({{LEAK_PCT}}% of billable) leaked to failed payments on
@@ -147,7 +147,7 @@
     </div>
     <div class="decomp__leg">
       <span><b>Volume effect</b> — the base shrank from {{ACT_FIRST}} to {{ACT_LAST}}</span>
-      <span><b>Price/mix effect</b> — ARPU moved {{ARPU_CHG_PCT}}%, premium share held ~19–20%</span>
+      <span><b>Price/mix effect</b> — ARPU moved {{ARPU_CHG_PCT}}%, premium share held ~{{PREMIUM_SHARE}}%</span>
     </div>
     <div class="decomp__leak">Separately, <b>${{LEAK}}</b> ({{LEAK_PCT}}% of billable) was lost to failed payments on active accounts — involuntary, not a cancellation. This is gross leakage; how much returns depends on dunning success (see action 1).</div>
   </div>
@@ -157,14 +157,14 @@
     <div class="action__n">1</div>
     <div>
       <div class="action__t">Recover failed payments <span class="tag">Quick win</span></div>
-      <div class="action__d">Up to <b>${{LEAK}}</b> a year leaks from active users whose charge failed — not churn, just a broken charge. A dunning flow (retries, card-update prompts) wins back a share: at a 25 / 50 / 75% recovery rate that is <b>${{LEAK_25}} / ${{LEAK_50}} / ${{LEAK_75}}</b> a year, for minimal product work. <b>Owner:</b> payments / eng.</div>
+      <div class="action__d">Up to <b>${{LEAK}}</b> a year leaks from active users whose charge failed — not churn, just a broken charge. A dunning flow (retries, card-update prompts) wins back a share: at a 25 / 50 / 75% recovery rate that is <b>${{LEAK_25}} / ${{LEAK_50}} / ${{LEAK_75}}</b> a year, for minimal product work. <b>Owner:</b> payments / eng. <b>Success:</b> $ recovered + involuntary-churn rate after retries.</div>
     </div>
   </div>
   <div class="action">
     <div class="action__n">2</div>
     <div>
       <div class="action__t">Fix early-month retention <span class="tag">Main lever</span></div>
-      <div class="action__d">Churn is highest in months 2–4 ({{CHURN_FIRST}}% → falling) and eases to {{CHURN_LAST}}% by M12. The damage is at onboarding. Investigate why churn peaks in months 2–4 — test whether it reflects onboarding, cohort mix, or how the data was simulated — then carry what works later into those early weeks. <b>Owner:</b> product / growth.</div>
+      <div class="action__d">Churn is highest in months 2–4 ({{CHURN_FIRST}}% → falling) and eases to {{CHURN_LAST}}% by M12. The damage is at onboarding. Investigate why churn peaks in months 2–4 — test whether it reflects onboarding or cohort mix — then carry what works later into those early weeks. <b>Owner:</b> product / growth. <b>Success:</b> months 2–4 churn down 1–2 pp.</div>
     </div>
   </div>
   <div class="action">
@@ -186,11 +186,11 @@
     </div>
     <div>
       <div class="fh__k">Note on the data</div>
-      <div class="fh__v">Figures come from a reproducible synthetic cohort (seed 42); the method is real, the specific numbers are illustrative. On live data the same pipeline runs; conclusions are re-derived.</div>
+      <div class="fh__v"><b>17/17 data-quality checks passed.</b> Figures come from a reproducible synthetic cohort (seed 42); the method is real, the specific numbers are illustrative. On live data the same pipeline runs; conclusions are re-derived.</div>
     </div>
   </div>
 
-  <div class="footer">Generated from output/metrics.csv — figures not hand-typed</div>
+  <div class="footer">Computed by build.py from the pipeline outputs (metrics.csv + subscription rows) — not hand-typed</div>
 
 </div>
 </body>
